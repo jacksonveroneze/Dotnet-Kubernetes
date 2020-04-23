@@ -3,7 +3,6 @@ kind: Service
 metadata:
   name: redis-admin
   namespace: dotnet-redis
-  namespace: dotnet-redis
 spec:
   type: NodePort
   selector:
