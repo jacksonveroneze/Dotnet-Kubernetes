@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnet-redis
+  namespace: dotnet-redis
+  labels:
+    app: dotnet-redis
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: dotnet-redis
+  template:
+    metadata:
+      labels:
+        app: dotnet-redis
+    spec:
+      containers:
+        - name: dotnet-redis
+          image: dotnet-redis:1.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "250m"

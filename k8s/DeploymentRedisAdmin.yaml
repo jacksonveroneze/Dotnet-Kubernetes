@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-admin
+  namespace: dotnet-redis
+  labels:
+    app: redis-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis-admin
+  template:
+    metadata:
+      labels:
+        app: redis-admin
+    spec:
+      containers:
+        - name: redis-admin
+          image: faktiva/php-redis-admin
+          ports:
+            - containerPort: 80
+          env:
+            - name: PHPREDMIN_DATABASE_REDIS_0_HOST
+              value: redis
