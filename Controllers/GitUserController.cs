@@ -24,26 +24,30 @@ namespace DotnetRedis.Controllers
         [HttpGet("{user}")]
         public async Task<IActionResult> Get(string user)
         {
-            _logger.LogInformation($"Response use cache.");
-
             try
             {
                 string valorJSON = _cacheRepository.GetString(user);
 
-                if (valorJSON is null)
+                if (string.IsNullOrEmpty(valorJSON))
                 {
-                    IGitHubApiService gitHubApiService = RestService.For<IGitHubApiService>("https://api.github.com/");
+                    _logger.LogInformation($"Response use cache.");
 
-                    UserResponse userResponse = await gitHubApiService.GetUser(user);
-
-                    valorJSON = JsonSerializer.Serialize(userResponse);
-
-                    _cacheRepository.SetString(user, valorJSON, 10);
+                    return Ok(valorJSON);
                 }
+
+                IGitHubApiService gitHubApiService = RestService.For<IGitHubApiService>("https://api.github.com/");
+
+                UserResponse userResponse = await gitHubApiService.GetUser(user);
+
+                valorJSON = JsonSerializer.Serialize(userResponse);
+
+                _cacheRepository.SetString(user, valorJSON, 10);
+
+                _logger.LogInformation($"Response use network.");
 
                 return Ok(valorJSON);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return BadRequest();
             }

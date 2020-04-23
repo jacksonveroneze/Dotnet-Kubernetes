@@ -16,7 +16,7 @@ namespace DotnetRedis
         public void SetString(string key, string value, int timeOutHours)
         {
             DistributedCacheEntryOptions opcoesCache = new DistributedCacheEntryOptions()
-                .SetAbsoluteExpiration(TimeSpan.FromMinutes(1));
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(timeOutHours));
 
             _cache.SetString(key, value, opcoesCache);
         }
