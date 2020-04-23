@@ -32,9 +32,9 @@ namespace DotnetRedis.Controllers
 
                 if (valorJSON is null)
                 {
-                    IGitHubApiService cepClient = RestService.For<IGitHubApiService>("https://api.github.com/");
+                    IGitHubApiService gitHubApiService = RestService.For<IGitHubApiService>("https://api.github.com/");
 
-                    UserResponse userResponse = await cepClient.GetUser(user);
+                    UserResponse userResponse = await gitHubApiService.GetUser(user);
 
                     valorJSON = JsonSerializer.Serialize(userResponse);
 
@@ -45,7 +45,7 @@ namespace DotnetRedis.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return InternalServerError();
             }
         }
     }
