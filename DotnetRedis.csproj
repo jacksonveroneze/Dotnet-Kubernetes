@@ -5,6 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="3.1.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI" Version="3.1.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.UI.Client" Version="3.1.0" />
     <PackageReference Include="refit" Version="5.1.67" />
     <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
   </ItemGroup>

@@ -4,9 +4,9 @@ namespace DotnetRedis.Models
 {
     public class UserResponse
     {
-        public string Login { get; set; }
-
         public int Id { get; set; }
+
+        public string Login { get; set; }
 
         public string AvatarUrl { get; set; }
 
@@ -22,8 +22,8 @@ namespace DotnetRedis.Models
 
         public string Bio { get; set; }
 
-        public DateTime created_at { get; set; }
+        public DateTime UreatedAt { get; set; }
 
-        public DateTime updated_at { get; set; }
+        public DateTime UpdatedAt { get; set; }
     }
 }

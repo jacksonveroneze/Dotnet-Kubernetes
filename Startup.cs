@@ -1,4 +1,6 @@
+using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,11 +21,16 @@ namespace DotnetRedis
         {
             services.AddDistributedRedisCache(options =>
             {
-                options.Configuration = Configuration.GetConnectionString("RedisServer");;
+                options.Configuration = Configuration.GetConnectionString("RedisServer"); ;
                 options.InstanceName = "GitHubUserCache-";
             });
 
             services.AddTransient<ICacheRepository, RedisRepository>();
+
+            services.AddHealthChecks()
+                .AddRedis(Configuration.GetConnectionString("RedisServer"), name: "Redis");
+
+            services.AddHealthChecksUI();
 
             services.AddControllers();
         }
@@ -35,7 +42,17 @@ namespace DotnetRedis
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            app.UseHealthChecks("/status");
+
+            app.UseHealthChecks("/healthchecks-data-ui", new HealthCheckOptions()
+            {
+                Predicate = _ => true,
+                ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+            });
+
+            app.UseHealthChecksUI();
+
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 

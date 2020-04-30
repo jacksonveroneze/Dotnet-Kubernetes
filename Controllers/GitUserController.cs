@@ -28,7 +28,7 @@ namespace DotnetRedis.Controllers
             {
                 string valorJSON = _cacheRepository.GetString(user);
 
-                if (string.IsNullOrEmpty(valorJSON))
+                if (!string.IsNullOrEmpty(valorJSON))
                 {
                     _logger.LogInformation($"Response use cache.");
 
@@ -47,9 +47,9 @@ namespace DotnetRedis.Controllers
 
                 return Ok(valorJSON);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return BadRequest();
+                return BadRequest(e.Message);
             }
         }
     }
